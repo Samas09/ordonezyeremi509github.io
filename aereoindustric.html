@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aereo Industric – Vuelos, Hoteles & Guías Turísticos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --azul:       #0A2463;
+      --azul-med:   #1B4FD8;
+      --azul-claro: #2E6FD9;
+      --dorado:     #C9A84C;
+      --dorado-cl:  #F0D080;
+      --blanco:     #FFFFFF;
+      --gris-cl:    #F4F6FB;
+      --gris-med:   #E2E8F5;
+      --texto:      #1A1A2E;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:'Raleway',sans-serif; color:var(--texto); background:var(--blanco); }
+
+    /* ===== NAVBAR ===== */
+    nav {
+      position:fixed; top:0; width:100%; z-index:1000;
+      background:rgba(10,36,99,0.97); backdrop-filter:blur(8px);
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 40px; height:70px;
+      border-bottom:2px solid var(--dorado);
+    }
+    .logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .logo-icon { font-size:28px; }
+    .logo-text { font-family:'Playfair Display',serif; color:var(--blanco); font-size:22px; font-weight:700; }
+    .logo-text span { color:var(--dorado); }
+    .nav-links { display:flex; gap:30px; list-style:none; }
+    .nav-links a { color:rgba(255,255,255,0.85); text-decoration:none; font-size:14px; font-weight:500; letter-spacing:.5px; transition:color .3s; }
+    .nav-links a:hover { color:var(--dorado); }
+    .nav-cta {
+      background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));
+      color:var(--azul)!important; padding:8px 22px; border-radius:25px;
+      font-weight:700!important;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      min-height:100vh;
+      background:linear-gradient(135deg,var(--azul) 0%,#0D3580 50%,var(--azul-med) 100%);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; padding:120px 20px 60px; position:relative; overflow:hidden;
+    }
+    .hero::before {
+      content:''; position:absolute; inset:0;
+      background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A84C' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .hero-badge {
+      background:rgba(201,168,76,.15); border:1px solid var(--dorado);
+      color:var(--dorado-cl); padding:6px 18px; border-radius:20px;
+      font-size:12px; letter-spacing:2px; font-weight:600; text-transform:uppercase;
+      margin-bottom:24px;
+    }
+    .hero h1 {
+      font-family:'Playfair Display',serif; font-size:clamp(38px,6vw,80px);
+      color:var(--blanco); line-height:1.1; margin-bottom:20px;
+    }
+    .hero h1 span { color:var(--dorado); }
+    .hero p {
+      color:rgba(255,255,255,.75); font-size:18px; max-width:580px;
+      line-height:1.7; margin-bottom:40px;
+    }
+    .hero-btns { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; }
+    .btn-primary {
+      background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));
+      color:var(--azul); padding:14px 36px; border-radius:30px;
+      font-weight:700; font-size:15px; text-decoration:none; transition:transform .3s,box-shadow .3s;
+      box-shadow:0 4px 20px rgba(201,168,76,.4);
+    }
+    .btn-primary:hover { transform:translateY(-3px); box-shadow:0 8px 30px rgba(201,168,76,.5); }
+    .btn-secondary {
+      border:2px solid rgba(255,255,255,.4); color:var(--blanco);
+      padding:14px 36px; border-radius:30px; font-weight:600;
+      font-size:15px; text-decoration:none; transition:all .3s;
+    }
+    .btn-secondary:hover { background:rgba(255,255,255,.1); border-color:var(--blanco); }
+
+    /* HERO STATS */
+    .hero-stats {
+      display:flex; gap:40px; margin-top:60px; flex-wrap:wrap; justify-content:center;
+    }
+    .stat { text-align:center; }
+    .stat-num { font-family:'Playfair Display',serif; font-size:32px; color:var(--dorado); font-weight:900; }
+    .stat-lbl { color:rgba(255,255,255,.6); font-size:13px; margin-top:4px; }
+
+    /* ===== SECCIÓN GENERAL ===== */
+    section { padding:90px 20px; }
+    .section-inner { max-width:1200px; margin:0 auto; }
+    .section-header { text-align:center; margin-bottom:60px; }
+    .section-tag {
+      display:inline-block; background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));
+      color:var(--azul); padding:4px 16px; border-radius:20px;
+      font-size:12px; font-weight:700; letter-spacing:1.5px;
+      text-transform:uppercase; margin-bottom:14px;
+    }
+    .section-header h2 {
+      font-family:'Playfair Display',serif; font-size:clamp(28px,4vw,46px);
+      color:var(--azul); margin-bottom:14px;
+    }
+    .section-header p { color:#555; font-size:16px; max-width:600px; margin:0 auto; line-height:1.7; }
+
+    /* ===== BUSCADOR ===== */
+    .search-section { background:var(--gris-cl); }
+    .search-tabs { display:flex; gap:0; margin-bottom:24px; border-bottom:2px solid var(--gris-med); }
+    .search-tab {
+      padding:12px 28px; cursor:pointer; font-weight:600; font-size:14px;
+      color:#777; border-bottom:3px solid transparent; transition:all .3s; margin-bottom:-2px;
+    }
+    .search-tab.active { color:var(--azul); border-bottom-color:var(--dorado); }
+    .search-box {
+      background:var(--blanco); border-radius:16px; padding:32px;
+      box-shadow:0 4px 24px rgba(10,36,99,.08);
+      display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end;
+    }
+    .search-field { flex:1; min-width:160px; }
+    .search-field label { display:block; font-size:12px; font-weight:600; color:var(--azul); margin-bottom:6px; letter-spacing:.5px; }
+    .search-field input, .search-field select {
+      width:100%; padding:12px 16px; border:1.5px solid var(--gris-med);
+      border-radius:10px; font-family:'Raleway',sans-serif; font-size:14px;
+      color:var(--texto); background:var(--blanco); transition:border .3s;
+    }
+    .search-field input:focus, .search-field select:focus { border-color:var(--azul-med); outline:none; }
+    .btn-search {
+      background:linear-gradient(135deg,var(--azul),var(--azul-med));
+      color:var(--blanco); border:none; padding:14px 32px;
+      border-radius:10px; font-family:'Raleway',sans-serif;
+      font-weight:700; font-size:15px; cursor:pointer; transition:transform .3s,box-shadow .3s;
+      box-shadow:0 4px 16px rgba(10,36,99,.3); white-space:nowrap;
+    }
+    .btn-search:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(10,36,99,.4); }
+
+    /* ===== CARDS GRID ===== */
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:28px; }
+
+    /* ===== VUELOS ===== */
+    .vuelos-section { background:var(--blanco); }
+    .vuelo-card {
+      background:var(--blanco); border-radius:16px;
+      box-shadow:0 4px 20px rgba(10,36,99,.08);
+      overflow:hidden; transition:transform .3s,box-shadow .3s;
+      border:1px solid var(--gris-med);
+    }
+    .vuelo-card:hover { transform:translateY(-6px); box-shadow:0 12px 40px rgba(10,36,99,.15); }
+    .vuelo-img {
+      width:100%; height:180px; object-fit:cover;
+      background:linear-gradient(135deg,var(--azul),var(--azul-med));
+      display:flex; align-items:center; justify-content:center; font-size:60px;
+      position:relative; overflow:hidden;
+    }
+    .vuelo-img img { width:100%; height:100%; object-fit:cover; }
+    .vuelo-badge {
+      position:absolute; top:12px; right:12px;
+      background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));
+      color:var(--azul); padding:4px 12px; border-radius:20px;
+      font-size:11px; font-weight:700;
+    }
+    .vuelo-body { padding:20px; }
+    .vuelo-ruta {
+      display:flex; align-items:center; gap:8px;
+      font-family:'Playfair Display',serif; font-size:16px; font-weight:700;
+      color:var(--azul); margin-bottom:8px;
+    }
+    .vuelo-ruta span { color:var(--dorado); }
+    .vuelo-meta { display:flex; gap:16px; color:#777; font-size:13px; margin-bottom:14px; flex-wrap:wrap; }
+    .vuelo-footer { display:flex; align-items:center; justify-content:space-between; }
+    .vuelo-precio { font-family:'Playfair Display',serif; font-size:24px; font-weight:900; color:var(--azul); }
+    .vuelo-precio small { font-size:12px; font-weight:400; color:#999; font-family:'Raleway',sans-serif; }
+    .btn-reservar {
+      background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));
+      color:var(--azul); border:none; padding:8px 20px;
+      border-radius:20px; font-weight:700; font-size:13px;
+      cursor:pointer; transition:transform .2s;
+    }
+    .btn-reservar:hover { transform:scale(1.05); }
+
+    /* ===== HOTELES ===== */
+    .hoteles-section { background:var(--gris-cl); }
+    .hotel-card {
+      background:var(--blanco); border-radius:16px;
+      box-shadow:0 4px 20px rgba(10,36,99,.08);
+      overflow:hidden; transition:transform .3s,box-shadow .3s;
+      border:1px solid var(--gris-med);
+    }
+    .hotel-card:hover { transform:translateY(-6px); box-shadow:0 12px 40px rgba(10,36,99,.15); }
+    .hotel-img {
+      width:100%; height:200px;
+      background:linear-gradient(135deg,#1a3a6e,var(--azul-med));
+      position:relative; overflow:hidden;
+      display:flex; align-items:center; justify-content:center; font-size:56px;
+    }
+    .hotel-img img { width:100%; height:100%; object-fit:cover; }
+    .hotel-stars { position:absolute; bottom:12px; left:12px; color:var(--dorado); font-size:14px; }
+    .hotel-badge {
+      position:absolute; top:12px; right:12px;
+      background:var(--azul); color:var(--dorado);
+      padding:4px 12px; border-radius:20px; font-size:11px; font-weight:700;
+    }
+    .hotel-body { padding:20px; }
+    .hotel-nombre {
+      font-family:'Playfair Display',serif; font-size:17px; font-weight:700;
+      color:var(--azul); margin-bottom:4px;
+    }
+    .hotel-lugar { color:#888; font-size:13px; margin-bottom:10px; }
+    .hotel-amenidades { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+    .amenidad {
+      background:var(--gris-cl); color:var(--azul-med);
+      padding:3px 10px; border-radius:12px; font-size:11px; font-weight:600;
+    }
+    .hotel-footer { display:flex; align-items:center; justify-content:space-between; }
+    .hotel-precio { font-family:'Playfair Display',serif; font-size:22px; font-weight:900; color:var(--azul); }
+    .hotel-precio small { font-size:12px; font-weight:400; color:#999; font-family:'Raleway',sans-serif; }
+    .calificacion { display:flex; align-items:center; gap:4px; font-size:14px; font-weight:600; color:#f59e0b; }
+
+    /* ===== GUÍAS ===== */
+    .guias-section { background:var(--blanco); }
+    .guia-card {
+      background:var(--blanco); border-radius:16px;
+      box-shadow:0 4px 20px rgba(10,36,99,.08);
+      padding:24px; text-align:center;
+      transition:transform .3s,box-shadow .3s;
+      border:1px solid var(--gris-med);
+    }
+    .guia-card:hover { transform:translateY(-6px); box-shadow:0 12px 40px rgba(10,36,99,.15); }
+    .guia-foto {
+      width:110px; height:110px; border-radius:50%;
+      margin:0 auto 16px;
+      border:3px solid var(--dorado);
+      overflow:hidden;
+      background:linear-gradient(135deg,var(--azul),var(--azul-med));
+      display:flex; align-items:center; justify-content:center; font-size:46px;
+    }
+    .guia-foto img { width:100%; height:100%; object-fit:cover; }
+    .guia-nombre { font-family:'Playfair Display',serif; font-size:17px; font-weight:700; color:var(--azul); margin-bottom:4px; }
+    .guia-origen { color:var(--dorado); font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+    .guia-especialidad { color:#777; font-size:13px; margin-bottom:10px; line-height:1.5; }
+    .guia-idiomas { display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-bottom:14px; }
+    .idioma {
+      background:var(--azul); color:var(--blanco);
+      padding:3px 10px; border-radius:12px; font-size:11px; font-weight:600;
+    }
+    .guia-stats { display:flex; gap:20px; justify-content:center; margin-bottom:16px; }
+    .guia-stat { text-align:center; }
+    .guia-stat-num { font-family:'Playfair Display',serif; font-size:18px; font-weight:900; color:var(--azul); }
+    .guia-stat-lbl { color:#aaa; font-size:11px; }
+    .guia-precio { font-family:'Playfair Display',serif; font-size:20px; font-weight:900; color:var(--azul); margin-bottom:12px; }
+    .guia-precio small { font-size:12px; font-weight:400; color:#999; font-family:'Raleway',sans-serif; }
+    .btn-contratar {
+      background:linear-gradient(135deg,var(--azul),var(--azul-med));
+      color:var(--blanco); border:none; padding:10px 26px;
+      border-radius:20px; font-weight:700; font-size:13px;
+      cursor:pointer; transition:transform .2s; width:100%;
+    }
+    .btn-contratar:hover { transform:scale(1.03); }
+
+    /* ===== OFERTAS ===== */
+    .ofertas-section {
+      background:linear-gradient(135deg,var(--azul) 0%,#0D3580 60%,var(--azul-med) 100%);
+    }
+    .ofertas-section .section-header h2 { color:var(--blanco); }
+    .ofertas-section .section-header p { color:rgba(255,255,255,.7); }
+    .oferta-card {
+      background:rgba(255,255,255,.07); border:1.5px solid rgba(201,168,76,.3);
+      border-radius:16px; overflow:hidden; transition:transform .3s,box-shadow .3s;
+    }
+    .oferta-card:hover { transform:translateY(-6px); box-shadow:0 16px 40px rgba(0,0,0,.3); }
+    .oferta-img {
+      width:100%; height:180px;
+      background:linear-gradient(135deg,rgba(201,168,76,.2),rgba(30,80,220,.3));
+      display:flex; align-items:center; justify-content:center; font-size:56px;
+      position:relative; overflow:hidden;
+    }
+    .oferta-img img { width:100%; height:100%; object-fit:cover; }
+    .oferta-descuento {
+      position:absolute; top:12px; left:12px;
+      background:linear-gradient(135deg,#e11d48,#f43f5e);
+      color:var(--blanco); padding:6px 14px; border-radius:20px;
+      font-size:13px; font-weight:700;
+    }
+    .oferta-body { padding:20px; }
+    .oferta-titulo {
+      font-family:'Playfair Display',serif; font-size:18px; font-weight:700;
+      color:var(--blanco); margin-bottom:8px;
+    }
+    .oferta-desc { color:rgba(255,255,255,.65); font-size:13px; line-height:1.6; margin-bottom:14px; }
+    .oferta-incluye { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+    .incluye-item {
+      background:rgba(201,168,76,.15); border:1px solid rgba(201,168,76,.3);
+      color:var(--dorado-cl); padding:3px 10px; border-radius:12px; font-size:11px; font-weight:600;
+    }
+    .oferta-footer { display:flex; align-items:center; justify-content:space-between; }
+    .oferta-precio-antes { color:rgba(255,255,255,.4); text-decoration:line-through; font-size:14px; }
+    .oferta-precio-ahora { font-family:'Playfair Display',serif; font-size:26px; font-weight:900; color:var(--dorado); }
+    .btn-oferta {
+      background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));
+      color:var(--azul); border:none; padding:9px 22px;
+      border-radius:20px; font-weight:700; font-size:13px; cursor:pointer; transition:transform .2s;
+    }
+    .btn-oferta:hover { transform:scale(1.05); }
+
+    /* ===== PAQUETES ===== */
+    .paquetes-section { background:var(--gris-cl); }
+    .paquete-card {
+      background:var(--blanco); border-radius:20px;
+      box-shadow:0 4px 24px rgba(10,36,99,.1);
+      overflow:hidden; transition:transform .3s,box-shadow .3s;
+      border:1px solid var(--gris-med);
+    }
+    .paquete-card.featured {
+      border:2px solid var(--dorado);
+      box-shadow:0 8px 40px rgba(201,168,76,.2);
+    }
+    .paquete-card:hover { transform:translateY(-6px); box-shadow:0 16px 50px rgba(10,36,99,.15); }
+    .paquete-header {
+      background:linear-gradient(135deg,var(--azul),var(--azul-med));
+      padding:24px; text-align:center; position:relative;
+    }
+    .paquete-header.dorado {
+      background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));
+    }
+    .paquete-tag {
+      display:inline-block; background:rgba(255,255,255,.2);
+      color:var(--blanco); padding:3px 12px; border-radius:20px;
+      font-size:11px; font-weight:600; letter-spacing:1px;
+      text-transform:uppercase; margin-bottom:10px;
+    }
+    .paquete-header.dorado .paquete-tag { color:var(--azul); }
+    .paquete-nombre {
+      font-family:'Playfair Display',serif; font-size:22px; font-weight:900;
+      color:var(--blanco); margin-bottom:4px;
+    }
+    .paquete-header.dorado .paquete-nombre { color:var(--azul); }
+    .paquete-precio {
+      font-family:'Playfair Display',serif; font-size:36px; font-weight:900;
+      color:var(--dorado); margin-top:8px;
+    }
+    .paquete-header.dorado .paquete-precio { color:var(--azul); }
+    .paquete-precio small { font-size:14px; font-weight:400; color:rgba(255,255,255,.7); font-family:'Raleway',sans-serif; }
+    .paquete-header.dorado .paquete-precio small { color:rgba(10,36,99,.6); }
+    .paquete-body { padding:28px; }
+    .paquete-feature {
+      display:flex; align-items:center; gap:10px;
+      padding:8px 0; border-bottom:1px solid var(--gris-med); font-size:14px; color:#444;
+    }
+    .paquete-feature:last-child { border-bottom:none; }
+    .check { color:var(--dorado); font-size:16px; font-weight:700; }
+    .btn-paquete {
+      display:block; text-align:center; margin-top:20px;
+      background:linear-gradient(135deg,var(--azul),var(--azul-med));
+      color:var(--blanco); border:none; padding:13px;
+      border-radius:12px; font-weight:700; font-size:14px;
+      cursor:pointer; transition:transform .2s,box-shadow .2s;
+      text-decoration:none;
+    }
+    .paquete-card.featured .btn-paquete {
+      background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));
+      color:var(--azul);
+    }
+    .btn-paquete:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(10,36,99,.3); }
+
+    /* ===== DESTINOS POPULARES ===== */
+    .destinos-section { background:var(--blanco); }
+    .destinos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
+    .destino-card {
+      border-radius:16px; overflow:hidden; position:relative;
+      height:260px; cursor:pointer; transition:transform .3s;
+    }
+    .destino-card:hover { transform:scale(1.03); }
+    .destino-card:hover .destino-overlay { background:rgba(10,36,99,.5); }
+    .destino-img {
+      width:100%; height:100%;
+      background:linear-gradient(135deg,var(--azul),var(--azul-claro));
+      display:flex; align-items:center; justify-content:center; font-size:64px;
+    }
+    .destino-img img { width:100%; height:100%; object-fit:cover; }
+    .destino-overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(to top,rgba(10,36,99,.85) 0%,rgba(10,36,99,.1) 60%);
+      transition:background .3s;
+    }
+    .destino-info { position:absolute; bottom:20px; left:20px; right:20px; }
+    .destino-nombre {
+      font-family:'Playfair Display',serif; font-size:20px; font-weight:700;
+      color:var(--blanco); margin-bottom:4px;
+    }
+    .destino-desde { color:var(--dorado-cl); font-size:13px; font-weight:600; }
+
+    /* ===== TESTIMONIOS ===== */
+    .testimonios-section { background:var(--gris-cl); }
+    .test-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:24px; }
+    .test-card {
+      background:var(--blanco); border-radius:16px; padding:28px;
+      box-shadow:0 4px 20px rgba(10,36,99,.07);
+      border:1px solid var(--gris-med);
+    }
+    .test-stars { color:var(--dorado); font-size:18px; margin-bottom:14px; }
+    .test-texto { color:#555; font-size:14px; line-height:1.8; margin-bottom:18px; font-style:italic; }
+    .test-autor { display:flex; align-items:center; gap:12px; }
+    .test-avatar {
+      width:44px; height:44px; border-radius:50%;
+      background:linear-gradient(135deg,var(--azul),var(--azul-med));
+      display:flex; align-items:center; justify-content:center;
+      font-size:18px; color:var(--blanco); font-weight:700; flex-shrink:0;
+    }
+    .test-nombre { font-weight:700; color:var(--azul); font-size:14px; }
+    .test-pais { color:#aaa; font-size:12px; }
+
+    /* ===== NEWSLETTER ===== */
+    .newsletter-section {
+      background:linear-gradient(135deg,var(--azul),var(--azul-med));
+      text-align:center;
+    }
+    .newsletter-section h2 { font-family:'Playfair Display',serif; font-size:36px; color:var(--blanco); margin-bottom:12px; }
+    .newsletter-section p { color:rgba(255,255,255,.7); margin-bottom:32px; font-size:16px; }
+    .newsletter-form { display:flex; gap:12px; max-width:500px; margin:0 auto; }
+    .newsletter-form input {
+      flex:1; padding:14px 20px; border-radius:10px; border:2px solid rgba(255,255,255,.2);
+      background:rgba(255,255,255,.1); color:var(--blanco);
+      font-family:'Raleway',sans-serif; font-size:14px;
+    }
+    .newsletter-form input::placeholder { color:rgba(255,255,255,.5); }
+    .newsletter-form input:focus { outline:none; border-color:var(--dorado); }
+    .newsletter-form button {
+      background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));
+      color:var(--azul); border:none; padding:14px 28px;
+      border-radius:10px; font-weight:700; font-size:14px;
+      cursor:pointer; white-space:nowrap; transition:transform .2s;
+    }
+    .newsletter-form button:hover { transform:scale(1.04); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background:var(--azul); color:rgba(255,255,255,.75);
+      padding:60px 40px 30px;
+    }
+    .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:40px; max-width:1200px; margin:0 auto 40px; }
+    .footer-logo-text { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; color:var(--blanco); margin-bottom:12px; }
+    .footer-logo-text span { color:var(--dorado); }
+    .footer-desc { font-size:13px; line-height:1.8; max-width:260px; }
+    .footer-col h4 { color:var(--dorado); font-size:13px; font-weight:700; letter-spacing:1px; text-transform:uppercase; margin-bottom:16px; }
+    .footer-col ul { list-style:none; }
+    .footer-col ul li { margin-bottom:8px; }
+    .footer-col ul li a { color:rgba(255,255,255,.65); text-decoration:none; font-size:13px; transition:color .3s; }
+    .footer-col ul li a:hover { color:var(--dorado); }
+    .footer-bottom { border-top:1px solid rgba(255,255,255,.1); padding-top:24px; text-align:center; font-size:12px; max-width:1200px; margin:0 auto; }
+
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      display:none; position:fixed; inset:0; z-index:9999;
+      background:rgba(10,36,99,.7); backdrop-filter:blur(4px);
+      align-items:center; justify-content:center;
+    }
+    .modal-overlay.active { display:flex; }
+    .modal {
+      background:var(--blanco); border-radius:20px; padding:40px;
+      max-width:480px; width:90%; position:relative;
+      box-shadow:0 20px 60px rgba(0,0,0,.3);
+    }
+    .modal-close {
+      position:absolute; top:16px; right:20px;
+      background:none; border:none; font-size:22px; cursor:pointer; color:#999;
+    }
+    .modal h3 { font-family:'Playfair Display',serif; font-size:24px; color:var(--azul); margin-bottom:8px; }
+    .modal p { color:#777; font-size:14px; margin-bottom:24px; }
+    .modal-form { display:flex; flex-direction:column; gap:14px; }
+    .modal-form input {
+      padding:12px 16px; border:1.5px solid var(--gris-med);
+      border-radius:10px; font-family:'Raleway',sans-serif; font-size:14px;
+    }
+    .modal-form input:focus { border-color:var(--azul-med); outline:none; }
+    .modal-form button {
+      background:linear-gradient(135deg,var(--azul),var(--azul-med));
+      color:var(--blanco); border:none; padding:14px;
+      border-radius:10px; font-weight:700; font-size:15px;
+      cursor:pointer; transition:transform .2s;
+    }
+    .modal-form button:hover { transform:scale(1.02); }
+
+    @media(max-width:768px) {
+      nav { padding:0 20px; }
+      .nav-links { display:none; }
+      .footer-grid { grid-template-columns:1fr 1fr; }
+      .newsletter-form { flex-direction:column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <a href="#" class="logo">
+    <span class="logo-icon">✈</span>
+    <span class="logo-text">Aereo <span>Industric</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="vuelos.html">Vuelos</a></li>
+    <li><a href="hoteles.html">Hoteles</a></li>
+    <li><a href="guias.html">🧭 Guías</a></li>
+    <li><a href="#ofertas">Ofertas</a></li>
+    <li><a href="#paquetes">Paquetes</a></li>
+    <li><a href="#contacto" class="nav-cta">Reservar Ahora</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-badge">✦ Tu Agencia de Viajes de Confianza ✦</div>
+  <h1>Explora el Mundo con<br/><span>Aereo Industric</span></h1>
+  <p>Vuelos, hoteles y guías turísticos expertos para que cada viaje sea una experiencia inolvidable. Más de 150 destinos esperan por ti.</p>
+  <div class="hero-btns">
+    <a href="vuelos.html" class="btn-primary">🛫 Buscar Vuelos</a>
+    <a href="#ofertas" class="btn-secondary">🏷 Ver Ofertas</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">150+</div><div class="stat-lbl">Destinos</div></div>
+    <div class="stat"><div class="stat-num">50K+</div><div class="stat-lbl">Viajeros Felices</div></div>
+    <div class="stat"><div class="stat-num">300+</div><div class="stat-lbl">Hoteles Asociados</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-lbl">Calificación</div></div>
+  </div>
+</section>
+
+<!-- BUSCADOR -->
+<section class="search-section" id="buscador">
+  <div class="section-inner">
+    <div class="search-tabs">
+      <div class="search-tab active" onclick="setTab(this,'vuelos-search')">✈ Vuelos</div>
+      <div class="search-tab" onclick="setTab(this,'hoteles-search')">🏨 Hoteles</div>
+      <div class="search-tab" onclick="setTab(this,'paquetes-search')">🎒 Paquetes</div>
+    </div>
+    <div class="search-box" id="vuelos-search">
+      <div class="search-field"><label>ORIGEN</label><input type="text" placeholder="Ciudad o aeropuerto"/></div>
+      <div class="search-field"><label>DESTINO</label><input type="text" placeholder="¿A dónde viajas?"/></div>
+      <div class="search-field"><label>IDA</label><input type="date"/></div>
+      <div class="search-field"><label>REGRESO</label><input type="date"/></div>
+      <div class="search-field"><label>PASAJEROS</label>
+        <select><option>1 Adulto</option><option>2 Adultos</option><option>3 Adultos</option><option>Familia</option></select>
+      </div>
+      <button class="btn-search" onclick="openModal()">🔍 Buscar</button>
+    </div>
+    <div class="search-box" id="hoteles-search" style="display:none">
+      <div class="search-field"><label>DESTINO</label><input type="text" placeholder="Ciudad o hotel"/></div>
+      <div class="search-field"><label>CHECK-IN</label><input type="date"/></div>
+      <div class="search-field"><label>CHECK-OUT</label><input type="date"/></div>
+      <div class="search-field"><label>HABITACIONES</label>
+        <select><option>1 Habitación</option><option>2 Habitaciones</option><option>Suite</option></select>
+      </div>
+      <button class="btn-search" onclick="openModal()">🔍 Buscar</button>
+    </div>
+    <div class="search-box" id="paquetes-search" style="display:none">
+      <div class="search-field"><label>DESTINO</label><input type="text" placeholder="¿Dónde quieres ir?"/></div>
+      <div class="search-field"><label>SALIDA</label><input type="date"/></div>
+      <div class="search-field"><label>DURACIÓN</label>
+        <select><option>3 noches</option><option>5 noches</option><option>7 noches</option><option>10+ noches</option></select>
+      </div>
+      <div class="search-field"><label>VIAJEROS</label>
+        <select><option>1 persona</option><option>2 personas</option><option>Grupo</option></select>
+      </div>
+      <button class="btn-search" onclick="openModal()">🔍 Buscar</button>
+    </div>
+  </div>
+</section>
+
+<!-- VUELOS -->
+<section class="vuelos-section" id="vuelos">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">✈ Vuelos Disponibles</div>
+      <h2>Destinos Internacionales</h2>
+      <p>Más de 15 rutas con los mejores precios y horarios flexibles para tu comodidad.</p>
+    </div>
+    <div class="cards-grid">
+
+      <!-- Vuelo 1 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo1.png" alt="Ciudad de México" onerror="this.parentNode.innerHTML='🇲🇽<div class=\'vuelo-badge\'>Económico</div>'"/>
+          <div class="vuelo-badge">Económico</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Ciudad de México</div>
+          <div class="vuelo-meta"><span>🕐 09:00 – 11:30</span><span>✈ 2h 30m</span><span>💺 Directo</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$189<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Ciudad de México','09:00–11:30 · 2h 30m · Directo','$189/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 2 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo2.png" alt="Miami" onerror="this.parentNode.innerHTML='🇺🇸<div class=\'vuelo-badge\'>Popular</div>'"/>
+          <div class="vuelo-badge">Popular</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Miami, USA</div>
+          <div class="vuelo-meta"><span>🕐 06:45 – 10:15</span><span>✈ 3h 30m</span><span>💺 Directo</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$249<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Miami, USA','06:45–10:15 · 3h 30m · Directo','$249/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 3 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo3.png" alt="Madrid" onerror="this.parentNode.innerHTML='🇪🇸<div class=\'vuelo-badge\'>Oferta</div>'"/>
+          <div class="vuelo-badge">Oferta</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Madrid, España</div>
+          <div class="vuelo-meta"><span>🕐 22:00 – 14:30</span><span>✈ 10h 30m</span><span>💺 1 Escala</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$520<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Madrid, España','22:00–14:30 · 10h 30m · 1 Escala','$520/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 4 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo4.png" alt="Cancún" onerror="this.parentNode.innerHTML='🏖<div class=\'vuelo-badge\'>Económico</div>'"/>
+          <div class="vuelo-badge">Económico</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Cancún, México</div>
+          <div class="vuelo-meta"><span>🕐 07:15 – 09:45</span><span>✈ 2h 30m</span><span>💺 Directo</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$175<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Cancún, México','07:15–09:45 · 2h 30m · Directo','$175/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 5 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo5.png" alt="Bogotá" onerror="this.parentNode.innerHTML='🇨🇴<div class=\'vuelo-badge\'>Nuevo</div>'"/>
+          <div class="vuelo-badge">Nuevo</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Bogotá, Colombia</div>
+          <div class="vuelo-meta"><span>🕐 10:30 – 16:00</span><span>✈ 5h 30m</span><span>💺 1 Escala</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$310<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Bogotá, Colombia','10:30–16:00 · 5h 30m · 1 Escala','$310/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 6 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo6.png" alt="Lima" onerror="this.parentNode.innerHTML='🇵🇪<div class=\'vuelo-badge\'>Directo</div>'"/>
+          <div class="vuelo-badge">Directo</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Lima, Perú</div>
+          <div class="vuelo-meta"><span>🕐 08:00 – 15:30</span><span>✈ 7h 30m</span><span>💺 Directo</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$390<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Lima, Perú','08:00–15:30 · 7h 30m · Directo','$390/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 7 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo7.png" alt="Nueva York" onerror="this.parentNode.innerHTML='🗽<div class=\'vuelo-badge\'>Popular</div>'"/>
+          <div class="vuelo-badge">Popular</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> New York, USA</div>
+          <div class="vuelo-meta"><span>🕐 05:30 – 13:00</span><span>✈ 7h 30m</span><span>💺 1 Escala</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$420<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → New York, USA','05:30–13:00 · 7h 30m · 1 Escala','$420/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 8 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo8.png" alt="París" onerror="this.parentNode.innerHTML='🗼<div class=\'vuelo-badge\'>Premium</div>'"/>
+          <div class="vuelo-badge">Premium</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> París, Francia</div>
+          <div class="vuelo-meta"><span>🕐 21:00 – 16:45+1</span><span>✈ 13h 45m</span><span>💺 1 Escala</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$680<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → París, Francia','21:00–16:45 · 13h 45m · 1 Escala','$680/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 9 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo9.png" alt="Buenos Aires" onerror="this.parentNode.innerHTML='🇦🇷<div class=\'vuelo-badge\'>Oferta</div>'"/>
+          <div class="vuelo-badge">Oferta</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Buenos Aires, Argentina</div>
+          <div class="vuelo-meta"><span>🕐 12:00 – 05:30+1</span><span>✈ 11h 30m</span><span>💺 1 Escala</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$550<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Buenos Aires','12:00–05:30 · 11h 30m · 1 Escala','$550/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 10 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo10.png" alt="Toronto" onerror="this.parentNode.innerHTML='🍁<div class=\'vuelo-badge\'>Nuevo</div>'"/>
+          <div class="vuelo-badge">Nuevo</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Toronto, Canadá</div>
+          <div class="vuelo-meta"><span>🕐 07:00 – 16:30</span><span>✈ 9h 30m</span><span>💺 1 Escala</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$480<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Toronto, Canadá','07:00–16:30 · 9h 30m · 1 Escala','$480/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 11 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo11.png" alt="São Paulo" onerror="this.parentNode.innerHTML='🇧🇷<div class=\'vuelo-badge\'>Económico</div>'"/>
+          <div class="vuelo-badge">Económico</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> São Paulo, Brasil</div>
+          <div class="vuelo-meta"><span>🕐 14:00 – 03:30+1</span><span>✈ 9h 30m</span><span>💺 1 Escala</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$470<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → São Paulo, Brasil','14:00–03:30 · 9h 30m · 1 Escala','$470/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 12 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo12.png" alt="Londres" onerror="this.parentNode.innerHTML='🇬🇧<div class=\'vuelo-badge\'>Premium</div>'"/>
+          <div class="vuelo-badge">Premium</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Londres, UK</div>
+          <div class="vuelo-meta"><span>🕐 19:30 – 14:00+1</span><span>✈ 12h 30m</span><span>💺 1 Escala</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$640<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Londres, UK','19:30–14:00 · 12h 30m · 1 Escala','$640/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 13 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo13.png" alt="Tokio" onerror="this.parentNode.innerHTML='🇯🇵<div class=\'vuelo-badge\'>Exótico</div>'"/>
+          <div class="vuelo-badge">Exótico</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Tokio, Japón</div>
+          <div class="vuelo-meta"><span>🕐 10:00 – 18:30+1</span><span>✈ 22h 30m</span><span>💺 2 Escalas</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$980<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Tokio, Japón','10:00–18:30 · 22h 30m · 2 Escalas','$980/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 14 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo14.png" alt="Punta Cana" onerror="this.parentNode.innerHTML='🌴<div class=\'vuelo-badge\'>Oferta</div>'"/>
+          <div class="vuelo-badge">Oferta</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Punta Cana, RD</div>
+          <div class="vuelo-meta"><span>🕐 08:30 – 14:00</span><span>✈ 5h 30m</span><span>💺 1 Escala</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$295<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Punta Cana, RD','08:30–14:00 · 5h 30m · 1 Escala','$295/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 15 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo15.png" alt="Dubái" onerror="this.parentNode.innerHTML='🇦🇪<div class=\'vuelo-badge\'>Lujo</div>'"/>
+          <div class="vuelo-badge">Lujo</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Dubái, EAU</div>
+          <div class="vuelo-meta"><span>🕐 09:00 – 07:30+1</span><span>✈ 18h 30m</span><span>💺 2 Escalas</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$1,150<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Dubái, EAU','09:00–07:30 · 18h 30m · 2 Escalas','$1,150/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vuelo 16 -->
+      <div class="vuelo-card">
+        <div class="vuelo-img">
+          <img src="vuelo16.png" alt="Santiago" onerror="this.parentNode.innerHTML='🇨🇱<div class=\'vuelo-badge\'>Directo</div>'"/>
+          <div class="vuelo-badge">Directo</div>
+        </div>
+        <div class="vuelo-body">
+          <div class="vuelo-ruta">Guatemala <span>→</span> Santiago, Chile</div>
+          <div class="vuelo-meta"><span>🕐 13:00 – 01:00+1</span><span>✈ 8h</span><span>💺 1 Escala</span></div>
+          <div class="vuelo-footer">
+            <div class="vuelo-precio">$490<small>/persona</small></div>
+            <button class="btn-reservar" onclick="openModal('Guatemala → Santiago, Chile','13:00–01:00 · 8h · 1 Escala','$490/persona','vuelo')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOTELES -->
+<section class="hoteles-section" id="hoteles">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">🏨 Hoteles</div>
+      <h2>Hospedaje de Lujo</h2>
+      <p>Más de 300 hoteles asociados en los destinos más populares del mundo.</p>
+    </div>
+    <div class="cards-grid">
+
+      <!-- Hotel 1 -->
+      <div class="hotel-card">
+        <div class="hotel-img">
+          <img src="hotel1.png" alt="Hotel Cancún" onerror="this.parentNode.innerHTML='🏨<div class=\'hotel-stars\'>★★★★★</div><div class=\'hotel-badge\'>5 Estrellas</div>'"/>
+          <div class="hotel-stars">★★★★★</div>
+          <div class="hotel-badge">5 Estrellas</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-nombre">Gran Caribe Resort & Spa</div>
+          <div class="hotel-lugar">📍 Cancún, México</div>
+          <div class="hotel-amenidades">
+            <span class="amenidad">🏊 Piscina</span><span class="amenidad">🍽 Restaurante</span><span class="amenidad">🌊 Playa</span>
+          </div>
+          <div class="hotel-footer">
+            <div>
+              <div class="hotel-precio">$180<small>/noche</small></div>
+              <div class="calificacion">⭐ 4.9 <span style="color:#aaa;font-weight:400;font-size:12px">(1,280 reseñas)</span></div>
+            </div>
+            <button class="btn-reservar" onclick="openModal('Gran Caribe Resort & Spa','Cancún, México · 5 Estrellas · Playa privada','$180/noche','hotel')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel 2 -->
+      <div class="hotel-card">
+        <div class="hotel-img">
+          <img src="hotel2.png" alt="Hotel Madrid" onerror="this.parentNode.innerHTML='🏰<div class=\'hotel-stars\'>★★★★★</div><div class=\'hotel-badge\'>Boutique</div>'"/>
+          <div class="hotel-stars">★★★★★</div>
+          <div class="hotel-badge">Boutique</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-nombre">Palacio Real Hotel Madrid</div>
+          <div class="hotel-lugar">📍 Madrid, España</div>
+          <div class="hotel-amenidades">
+            <span class="amenidad">💆 Spa</span><span class="amenidad">🍷 Bar</span><span class="amenidad">🏋 Gym</span>
+          </div>
+          <div class="hotel-footer">
+            <div>
+              <div class="hotel-precio">$220<small>/noche</small></div>
+              <div class="calificacion">⭐ 4.8 <span style="color:#aaa;font-weight:400;font-size:12px">(980 reseñas)</span></div>
+            </div>
+            <button class="btn-reservar" onclick="openModal('Palacio Real Hotel Madrid','Madrid, España · 5 Estrellas Boutique','$220/noche','hotel')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel 3 -->
+      <div class="hotel-card">
+        <div class="hotel-img">
+          <img src="hotel3.png" alt="Hotel Miami" onerror="this.parentNode.innerHTML='🌴<div class=\'hotel-stars\'>★★★★</div><div class=\'hotel-badge\'>4 Estrellas</div>'"/>
+          <div class="hotel-stars">★★★★</div>
+          <div class="hotel-badge">4 Estrellas</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-nombre">Miami Ocean View Hotel</div>
+          <div class="hotel-lugar">📍 Miami, USA</div>
+          <div class="hotel-amenidades">
+            <span class="amenidad">🌊 Playa</span><span class="amenidad">🍸 Rooftop</span><span class="amenidad">🅿 Parking</span>
+          </div>
+          <div class="hotel-footer">
+            <div>
+              <div class="hotel-precio">$195<small>/noche</small></div>
+              <div class="calificacion">⭐ 4.7 <span style="color:#aaa;font-weight:400;font-size:12px">(756 reseñas)</span></div>
+            </div>
+            <button class="btn-reservar" onclick="openModal('Miami Ocean View Hotel','Miami, USA · 4 Estrellas · Vista al mar','$195/noche','hotel')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel 4 -->
+      <div class="hotel-card">
+        <div class="hotel-img">
+          <img src="hotel4.png" alt="Hotel París" onerror="this.parentNode.innerHTML='🗼<div class=\'hotel-stars\'>★★★★★</div><div class=\'hotel-badge\'>Lujo</div>'"/>
+          <div class="hotel-stars">★★★★★</div>
+          <div class="hotel-badge">Lujo</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-nombre">Le Parisian Grand Hôtel</div>
+          <div class="hotel-lugar">📍 París, Francia</div>
+          <div class="hotel-amenidades">
+            <span class="amenidad">🍽 Gourmet</span><span class="amenidad">💆 Spa</span><span class="amenidad">🎭 Concierge</span>
+          </div>
+          <div class="hotel-footer">
+            <div>
+              <div class="hotel-precio">$350<small>/noche</small></div>
+              <div class="calificacion">⭐ 4.9 <span style="color:#aaa;font-weight:400;font-size:12px">(2,100 reseñas)</span></div>
+            </div>
+            <button class="btn-reservar" onclick="openModal('Le Parisian Grand Hôtel','París, Francia · 5 Estrellas · Centro histórico','$350/noche','hotel')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel 5 -->
+      <div class="hotel-card">
+        <div class="hotel-img">
+          <img src="hotel5.png" alt="Hotel Punta Cana" onerror="this.parentNode.innerHTML='🌺<div class=\'hotel-stars\'>★★★★★</div><div class=\'hotel-badge\'>All Inclusive</div>'"/>
+          <div class="hotel-stars">★★★★★</div>
+          <div class="hotel-badge">All Inclusive</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-nombre">Bahía Príncipe Grand Bávaro</div>
+          <div class="hotel-lugar">📍 Punta Cana, Rep. Dom.</div>
+          <div class="hotel-amenidades">
+            <span class="amenidad">🍹 All Inc.</span><span class="amenidad">🏊 Piscinas</span><span class="amenidad">🎭 Shows</span>
+          </div>
+          <div class="hotel-footer">
+            <div>
+              <div class="hotel-precio">$290<small>/noche</small></div>
+              <div class="calificacion">⭐ 4.8 <span style="color:#aaa;font-weight:400;font-size:12px">(1,560 reseñas)</span></div>
+            </div>
+            <button class="btn-reservar" onclick="openModal('Bahía Príncipe Grand Bávaro','Punta Cana · 5 Estrellas · All Inclusive','$290/noche','hotel')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel 6 -->
+      <div class="hotel-card">
+        <div class="hotel-img">
+          <img src="hotel6.png" alt="Hotel Dubái" onerror="this.parentNode.innerHTML='🏙<div class=\'hotel-stars\'>★★★★★</div><div class=\'hotel-badge\'>Ultra Lujo</div>'"/>
+          <div class="hotel-stars">★★★★★</div>
+          <div class="hotel-badge">Ultra Lujo</div>
+        </div>
+        <div class="hotel-body">
+          <div class="hotel-nombre">Burj Al Arab Jumeirah</div>
+          <div class="hotel-lugar">📍 Dubái, EAU</div>
+          <div class="hotel-amenidades">
+            <span class="amenidad">🚁 Helipuerto</span><span class="amenidad">🍽 Fine Dining</span><span class="amenidad">🏊 Infinito</span>
+          </div>
+          <div class="hotel-footer">
+            <div>
+              <div class="hotel-precio">$1,200<small>/noche</small></div>
+              <div class="calificacion">⭐ 5.0 <span style="color:#aaa;font-weight:400;font-size:12px">(890 reseñas)</span></div>
+            </div>
+            <button class="btn-reservar" onclick="openModal('Burj Al Arab Jumeirah','Dubái, EAU · Ultra Lujo · 7 Estrellas','$1,200/noche','hotel')">Reservar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- GUÍAS TURÍSTICOS -->
+<section class="guias-section" id="guias">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">🧭 Guías Turísticos</div>
+      <h2>Expertos Locales</h2>
+      <p>Conoce nuestros guías certificados, listos para hacer tu viaje una experiencia única.</p>
+    </div>
+    <div class="cards-grid">
+
+      <!-- Guía 1 -->
+      <div class="guia-card">
+        <div class="guia-foto">
+          <img src="guia1.png" alt="Carlos Méndez" onerror="this.style.display='none'; this.parentNode.innerHTML='👨'"/>
+        </div>
+        <div class="guia-nombre">Carlos Méndez</div>
+        <div class="guia-origen">📍 Ciudad de México, México</div>
+        <div class="guia-especialidad">Experto en historia azteca, arquitectura colonial y gastronomía mexicana.</div>
+        <div class="guia-idiomas"><span class="idioma">Español</span><span class="idioma">English</span><span class="idioma">Français</span></div>
+        <div class="guia-stats">
+          <div class="guia-stat"><div class="guia-stat-num">⭐ 4.9</div><div class="guia-stat-lbl">Calificación</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">350+</div><div class="guia-stat-lbl">Tours</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">8 años</div><div class="guia-stat-lbl">Experiencia</div></div>
+        </div>
+        <div class="guia-precio">$85<small>/día</small></div>
+        <button class="btn-contratar" onclick="openModal('Carlos Méndez','Ciudad de México · Historia azteca y gastronomía','$85/día','guia')">Contratar Guía</button>
+      </div>
+
+      <!-- Guía 2 -->
+      <div class="guia-card">
+        <div class="guia-foto">
+          <img src="guia2.png" alt="Isabella Rodríguez" onerror="this.style.display='none'; this.parentNode.innerHTML='👩'"/>
+        </div>
+        <div class="guia-nombre">Isabella Rodríguez</div>
+        <div class="guia-origen">📍 Madrid, España</div>
+        <div class="guia-especialidad">Especialista en arte, museos del Prado, Reina Sofía y arquitectura modernista.</div>
+        <div class="guia-idiomas"><span class="idioma">Español</span><span class="idioma">English</span><span class="idioma">Italiano</span></div>
+        <div class="guia-stats">
+          <div class="guia-stat"><div class="guia-stat-num">⭐ 4.8</div><div class="guia-stat-lbl">Calificación</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">280+</div><div class="guia-stat-lbl">Tours</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">6 años</div><div class="guia-stat-lbl">Experiencia</div></div>
+        </div>
+        <div class="guia-precio">$95<small>/día</small></div>
+        <button class="btn-contratar" onclick="openModal('Isabella Rodríguez','Madrid, España · Arte y museos','$95/día','guia')">Contratar Guía</button>
+      </div>
+
+      <!-- Guía 3 -->
+      <div class="guia-card">
+        <div class="guia-foto">
+          <img src="guia3.png" alt="Antoine Dupont" onerror="this.style.display='none'; this.parentNode.innerHTML='👨'"/>
+        </div>
+        <div class="guia-nombre">Antoine Dupont</div>
+        <div class="guia-origen">📍 París, Francia</div>
+        <div class="guia-especialidad">Guía oficial de la Torre Eiffel, el Louvre y los barrios históricos parisinos.</div>
+        <div class="guia-idiomas"><span class="idioma">Français</span><span class="idioma">English</span><span class="idioma">Español</span></div>
+        <div class="guia-stats">
+          <div class="guia-stat"><div class="guia-stat-num">⭐ 5.0</div><div class="guia-stat-lbl">Calificación</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">500+</div><div class="guia-stat-lbl">Tours</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">12 años</div><div class="guia-stat-lbl">Experiencia</div></div>
+        </div>
+        <div class="guia-precio">$120<small>/día</small></div>
+        <button class="btn-contratar" onclick="openModal('Antoine Dupont','París, Francia · Historia y cultura parisina','$120/día','guia')">Contratar Guía</button>
+      </div>
+
+      <!-- Guía 4 -->
+      <div class="guia-card">
+        <div class="guia-foto">
+          <img src="guia4.png" alt="Yuki Tanaka" onerror="this.style.display='none'; this.parentNode.innerHTML='👩'"/>
+        </div>
+        <div class="guia-nombre">Yuki Tanaka</div>
+        <div class="guia-origen">📍 Tokio, Japón</div>
+        <div class="guia-especialidad">Experta en templos sintoístas, cultura pop japonesa, cocina tradicional y ceremonia del té.</div>
+        <div class="guia-idiomas"><span class="idioma">日本語</span><span class="idioma">English</span><span class="idioma">Español</span></div>
+        <div class="guia-stats">
+          <div class="guia-stat"><div class="guia-stat-num">⭐ 4.9</div><div class="guia-stat-lbl">Calificación</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">420+</div><div class="guia-stat-lbl">Tours</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">10 años</div><div class="guia-stat-lbl">Experiencia</div></div>
+        </div>
+        <div class="guia-precio">$110<small>/día</small></div>
+        <button class="btn-contratar" onclick="openModal('Yuki Tanaka','Tokio, Japón · Cultura y gastronomía japonesa','$110/día','guia')">Contratar Guía</button>
+      </div>
+
+      <!-- Guía 5 -->
+      <div class="guia-card">
+        <div class="guia-foto">
+          <img src="guia5.png" alt="Valentina Torres" onerror="this.style.display='none'; this.parentNode.innerHTML='👩'"/>
+        </div>
+        <div class="guia-nombre">Valentina Torres</div>
+        <div class="guia-origen">📍 Buenos Aires, Argentina</div>
+        <div class="guia-especialidad">Tango, barrios de La Boca, San Telmo, gastronomía porteña y turismo aventura.</div>
+        <div class="guia-idiomas"><span class="idioma">Español</span><span class="idioma">English</span><span class="idioma">Português</span></div>
+        <div class="guia-stats">
+          <div class="guia-stat"><div class="guia-stat-num">⭐ 4.8</div><div class="guia-stat-lbl">Calificación</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">190+</div><div class="guia-stat-lbl">Tours</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">5 años</div><div class="guia-stat-lbl">Experiencia</div></div>
+        </div>
+        <div class="guia-precio">$75<small>/día</small></div>
+        <button class="btn-contratar" onclick="openModal('Valentina Torres','Buenos Aires · Tango y cultura porteña','$75/día','guia')">Contratar Guía</button>
+      </div>
+
+      <!-- Guía 6 -->
+      <div class="guia-card">
+        <div class="guia-foto">
+          <img src="guia6.png" alt="Omar Al-Rashid" onerror="this.style.display='none'; this.parentNode.innerHTML='👨'"/>
+        </div>
+        <div class="guia-nombre">Omar Al-Rashid</div>
+        <div class="guia-origen">📍 Dubái, EAU</div>
+        <div class="guia-especialidad">Safari en desierto, arquitectura futurista, souks tradicionales y cultura árabe.</div>
+        <div class="guia-idiomas"><span class="idioma">العربية</span><span class="idioma">English</span><span class="idioma">Español</span></div>
+        <div class="guia-stats">
+          <div class="guia-stat"><div class="guia-stat-num">⭐ 4.9</div><div class="guia-stat-lbl">Calificación</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">310+</div><div class="guia-stat-lbl">Tours</div></div>
+          <div class="guia-stat"><div class="guia-stat-num">9 años</div><div class="guia-stat-lbl">Experiencia</div></div>
+        </div>
+        <div class="guia-precio">$130<small>/día</small></div>
+        <button class="btn-contratar" onclick="openModal('Omar Al-Rashid','Dubái, EAU · Cultura árabe y aventura','$130/día','guia')">Contratar Guía</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- OFERTAS -->
+<section class="ofertas-section" id="ofertas">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">🏷 Ofertas Especiales</div>
+      <h2>Promociones de Temporada</h2>
+      <p>Aprovecha nuestras ofertas por tiempo limitado. ¡Precios que no encontrarás en otro lugar!</p>
+    </div>
+    <div class="cards-grid">
+
+      <div class="oferta-card">
+        <div class="oferta-img">
+          <img src="oferta1.png" alt="Cancún" onerror="this.parentNode.innerHTML='🏖<div class=\'oferta-descuento\'>-35% OFF</div>'"/>
+          <div class="oferta-descuento">-35% OFF</div>
+        </div>
+        <div class="oferta-body">
+          <div class="oferta-titulo">Paraíso en Cancún 7 Noches</div>
+          <div class="oferta-desc">Todo incluido: vuelo + hotel 5★ frente al mar + traslados. La oferta perfecta para tu escapada caribeña.</div>
+          <div class="oferta-incluye">
+            <span class="incluye-item">✈ Vuelo</span><span class="incluye-item">🏨 Hotel</span>
+            <span class="incluye-item">🍽 All Inc.</span><span class="incluye-item">🚌 Traslados</span>
+          </div>
+          <div class="oferta-footer">
+            <div><div class="oferta-precio-antes">$1,540</div><div class="oferta-precio-ahora">$999</div></div>
+            <button class="btn-oferta" onclick="openModal('Paraíso en Cancún – 7 Noches','Vuelo + Hotel 5★ + All Inclusive + Traslados','$999','oferta')">¡Lo Quiero!</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="oferta-card">
+        <div class="oferta-img">
+          <img src="oferta2.png" alt="Europa" onerror="this.parentNode.innerHTML='🏛<div class=\'oferta-descuento\'>-28% OFF</div>'"/>
+          <div class="oferta-descuento">-28% OFF</div>
+        </div>
+        <div class="oferta-body">
+          <div class="oferta-titulo">Europa Clásica – Madrid & París</div>
+          <div class="oferta-desc">10 días recorriendo las joyas de Europa: vuelo, hoteles boutique 4★ y guías privados incluidos.</div>
+          <div class="oferta-incluye">
+            <span class="incluye-item">✈ Vuelo</span><span class="incluye-item">🏨 Hotel</span>
+            <span class="incluye-item">🧭 Guía</span><span class="incluye-item">🍽 Desayuno</span>
+          </div>
+          <div class="oferta-footer">
+            <div><div class="oferta-precio-antes">$2,800</div><div class="oferta-precio-ahora">$1,999</div></div>
+            <button class="btn-oferta" onclick="openModal('Europa Clásica – Madrid & París','10 días · Vuelo + Hoteles 4★ + Guías','$1,999','oferta')">¡Lo Quiero!</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="oferta-card">
+        <div class="oferta-img">
+          <img src="oferta3.png" alt="Miami" onerror="this.parentNode.innerHTML='🌆<div class=\'oferta-descuento\'>-20% OFF</div>'"/>
+          <div class="oferta-descuento">-20% OFF</div>
+        </div>
+        <div class="oferta-body">
+          <div class="oferta-titulo">Miami Weekend Getaway 3D/2N</div>
+          <div class="oferta-desc">Escápate a Miami: vuelo directo + hotel 4★ en South Beach + actividades incluidas.</div>
+          <div class="oferta-incluye">
+            <span class="incluye-item">✈ Vuelo</span><span class="incluye-item">🏨 Hotel</span>
+            <span class="incluye-item">🎭 Actividades</span>
+          </div>
+          <div class="oferta-footer">
+            <div><div class="oferta-precio-antes">$750</div><div class="oferta-precio-ahora">$599</div></div>
+            <button class="btn-oferta" onclick="openModal('Miami Weekend Getaway 3D/2N','Vuelo directo + Hotel 4★ South Beach','$599','oferta')">¡Lo Quiero!</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PAQUETES -->
+<section class="paquetes-section" id="paquetes">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">🎒 Paquetes</div>
+      <h2>Elige Tu Plan Perfecto</h2>
+      <p>Paquetes diseñados para cada tipo de viajero y presupuesto.</p>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:28px;">
+
+      <div class="paquete-card">
+        <div class="paquete-header">
+          <div class="paquete-tag">Básico</div>
+          <div class="paquete-nombre">✈ Escapada</div>
+          <div class="paquete-precio">$499<small>/persona</small></div>
+        </div>
+        <div class="paquete-body">
+          <div class="paquete-feature"><span class="check">✓</span> Vuelo de ida y vuelta</div>
+          <div class="paquete-feature"><span class="check">✓</span> Hotel 3 estrellas (3 noches)</div>
+          <div class="paquete-feature"><span class="check">✓</span> Traslado aeropuerto</div>
+          <div class="paquete-feature"><span class="check">✓</span> Seguro de viaje básico</div>
+          <div class="paquete-feature" style="opacity:.4"><span>✗</span> Guía turístico</div>
+          <div class="paquete-feature" style="opacity:.4"><span>✗</span> Comidas incluidas</div>
+          <button class="btn-paquete" onclick="openModal('Paquete Escapada','Vuelo + Hotel 3★ (3 noches) + Traslados','$499/persona','paquete')">Seleccionar Plan</button>
+        </div>
+      </div>
+
+      <div class="paquete-card featured">
+        <div class="paquete-header dorado">
+          <div class="paquete-tag" style="background:rgba(10,36,99,.15);color:var(--azul)">⭐ Más Popular</div>
+          <div class="paquete-nombre">🌟 Confort</div>
+          <div class="paquete-precio">$899<small>/persona</small></div>
+        </div>
+        <div class="paquete-body">
+          <div class="paquete-feature"><span class="check">✓</span> Vuelo de ida y vuelta</div>
+          <div class="paquete-feature"><span class="check">✓</span> Hotel 4 estrellas (5 noches)</div>
+          <div class="paquete-feature"><span class="check">✓</span> Traslados incluidos</div>
+          <div class="paquete-feature"><span class="check">✓</span> Guía turístico 1 día</div>
+          <div class="paquete-feature"><span class="check">✓</span> Desayuno incluido</div>
+          <div class="paquete-feature"><span class="check">✓</span> Seguro de viaje completo</div>
+          <button class="btn-paquete" onclick="openModal('Paquete Confort ⭐','Vuelo + Hotel 4★ (5 noches) + Guía + Desayuno','$899/persona','paquete')">Seleccionar Plan</button>
+        </div>
+      </div>
+
+      <div class="paquete-card">
+        <div class="paquete-header">
+          <div class="paquete-tag">Premium</div>
+          <div class="paquete-nombre">👑 Lujo Total</div>
+          <div class="paquete-precio">$1,599<small>/persona</small></div>
+        </div>
+        <div class="paquete-body">
+          <div class="paquete-feature"><span class="check">✓</span> Vuelo Business Class</div>
+          <div class="paquete-feature"><span class="check">✓</span> Hotel 5 estrellas (7 noches)</div>
+          <div class="paquete-feature"><span class="check">✓</span> Traslados en limosina</div>
+          <div class="paquete-feature"><span class="check">✓</span> Guía privado 3 días</div>
+          <div class="paquete-feature"><span class="check">✓</span> Todo incluido</div>
+          <div class="paquete-feature"><span class="check">✓</span> Concierge 24/7</div>
+          <button class="btn-paquete" onclick="openModal('Paquete Lujo Total 👑','Vuelo Business + Hotel 5★ (7 noches) + Todo incluido','$1,599/persona','paquete')">Seleccionar Plan</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DESTINOS POPULARES -->
+<section class="destinos-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">🌍 Destinos</div>
+      <h2>Los Más Visitados</h2>
+    </div>
+    <div class="destinos-grid">
+      <div class="destino-card">
+        <div class="destino-img"><img src="destino_cancun.png" alt="Cancún" onerror="this.parentNode.innerHTML='🏖'"/></div>
+        <div class="destino-overlay"></div>
+        <div class="destino-info"><div class="destino-nombre">Cancún</div><div class="destino-desde">Desde $175/persona</div></div>
+      </div>
+      <div class="destino-card">
+        <div class="destino-img"><img src="destino_madrid.png" alt="Madrid" onerror="this.parentNode.innerHTML='🇪🇸'"/></div>
+        <div class="destino-overlay"></div>
+        <div class="destino-info"><div class="destino-nombre">Madrid</div><div class="destino-desde">Desde $520/persona</div></div>
+      </div>
+      <div class="destino-card">
+        <div class="destino-img"><img src="destino_paris.png" alt="París" onerror="this.parentNode.innerHTML='🗼'"/></div>
+        <div class="destino-overlay"></div>
+        <div class="destino-info"><div class="destino-nombre">París</div><div class="destino-desde">Desde $680/persona</div></div>
+      </div>
+      <div class="destino-card">
+        <div class="destino-img"><img src="destino_miami.png" alt="Miami" onerror="this.parentNode.innerHTML='🌴'"/></div>
+        <div class="destino-overlay"></div>
+        <div class="destino-info"><div class="destino-nombre">Miami</div><div class="destino-desde">Desde $249/persona</div></div>
+      </div>
+      <div class="destino-card">
+        <div class="destino-img"><img src="destino_tokio.png" alt="Tokio" onerror="this.parentNode.innerHTML='🇯🇵'"/></div>
+        <div class="destino-overlay"></div>
+        <div class="destino-info"><div class="destino-nombre">Tokio</div><div class="destino-desde">Desde $980/persona</div></div>
+      </div>
+      <div class="destino-card">
+        <div class="destino-img"><img src="destino_dubai.png" alt="Dubái" onerror="this.parentNode.innerHTML='🏙'"/></div>
+        <div class="destino-overlay"></div>
+        <div class="destino-info"><div class="destino-nombre">Dubái</div><div class="destino-desde">Desde $1,150/persona</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section class="testimonios-section">
+  <div class="section-inner">
+    <div class="section-header">
+      <div class="section-tag">💬 Testimonios</div>
+      <h2>Lo Que Dicen Nuestros Viajeros</h2>
+    </div>
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-texto">"El viaje a Cancún superó todas mis expectativas. El hotel fue increíble y el servicio de Aereo Industric fue impecable de principio a fin."</div>
+        <div class="test-autor">
+          <div class="test-avatar">A</div>
+          <div><div class="test-nombre">Ana García</div><div class="test-pais">🇬🇹 Guatemala</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-texto">"El guía Antoine en París fue extraordinario. Gracias a él conocí rincones que ninguna guía turística menciona. ¡100% recomendado!"</div>
+        <div class="test-autor">
+          <div class="test-avatar">R</div>
+          <div><div class="test-nombre">Roberto Sánchez</div><div class="test-pais">🇲🇽 México</div></div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <div class="test-texto">"Usé el paquete Premium para mi luna de miel en Dubái. El hotel Burj Al Arab fue un sueño. Aereo Industric hizo todo perfecto."</div>
+        <div class="test-autor">
+          <div class="test-avatar">M</div>
+          <div><div class="test-nombre">María & José López</div><div class="test-pais">🇨🇴 Colombia</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section" id="contacto">
+  <div class="section-inner">
+    <h2>¿Listo Para Tu Próxima Aventura?</h2>
+    <p>Suscríbete y recibe ofertas exclusivas, descuentos de hasta 40% y tips de viaje.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="Tu correo electrónico"/>
+      <button onclick="openModal()">Suscribirme ✈</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo-text">Aereo <span>Industric</span></div>
+      <p class="footer-desc">Tu agencia de confianza para vuelos, hoteles y guías turísticos en más de 150 destinos alrededor del mundo.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Destinos</h4>
+      <ul>
+        <li><a href="#">Cancún</a></li>
+        <li><a href="#">Miami</a></li>
+        <li><a href="#">Madrid</a></li>
+        <li><a href="#">París</a></li>
+        <li><a href="#">Tokio</a></li>
+        <li><a href="#">Dubái</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Servicios</h4>
+      <ul>
+        <li><a href="vuelos.html">Vuelos</a></li>
+        <li><a href="hoteles.html">Hoteles</a></li>
+        <li><a href="#guias">Guías Turísticos</a></li>
+        <li><a href="#paquetes">Paquetes</a></li>
+        <li><a href="#ofertas">Ofertas</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="#">📞 +502 2345-6789</a></li>
+        <li><a href="#">✉ info@aereo-industric.com</a></li>
+        <li><a href="#">📍 Guatemala City</a></li>
+        <li><a href="#">💬 WhatsApp</a></li>
+        <li><a href="#">📘 Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Aereo Industric. Todos los derechos reservados. | Hecho con ✈ y ❤</p>
+  </div>
+</footer>
+
+<!-- MODAL RESERVA COMPLETO -->
+<div class="modal-overlay" id="modal">
+  <div class="modal" style="padding:0;overflow:hidden;max-width:520px;">
+
+    <!-- PASO 1: FORMULARIO -->
+    <div id="modal-step-form">
+      <div style="background:linear-gradient(135deg,var(--azul),var(--azul-med));padding:26px 30px;position:relative;">
+        <button onclick="closeModal()" style="position:absolute;top:14px;right:16px;background:rgba(255,255,255,.2);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+        <div style="color:rgba(255,255,255,.7);font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;" id="modal-tipo-label">✈ Reservar Vuelo</div>
+        <div style="font-family:'Playfair Display',serif;font-size:20px;color:#fff;font-weight:700;" id="modal-titulo">–</div>
+        <div style="color:rgba(255,255,255,.65);font-size:13px;margin-top:4px;" id="modal-subtitulo">–</div>
+      </div>
+      <div style="padding:24px 30px;">
+        <div style="background:var(--gris-cl);border-radius:12px;padding:14px 16px;border-left:4px solid var(--dorado);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:#666;font-size:13px;">Total a pagar</span>
+          <span style="font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--azul);" id="modal-precio-display">–</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div class="modal-form"><label style="display:block;font-size:11px;font-weight:700;color:var(--azul);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;">Nombre</label><input type="text" placeholder="Juan" style="width:100%;padding:11px 14px;border:1.5px solid var(--gris-med);border-radius:9px;font-family:'Raleway',sans-serif;font-size:13px;"/></div>
+          <div class="modal-form"><label style="display:block;font-size:11px;font-weight:700;color:var(--azul);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;">Apellido</label><input type="text" placeholder="García" style="width:100%;padding:11px 14px;border:1.5px solid var(--gris-med);border-radius:9px;font-family:'Raleway',sans-serif;font-size:13px;"/></div>
+        </div>
+        <div style="margin-bottom:12px;"><label style="display:block;font-size:11px;font-weight:700;color:var(--azul);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;">Correo electrónico</label><input type="email" placeholder="juan@correo.com" style="width:100%;padding:11px 14px;border:1.5px solid var(--gris-med);border-radius:9px;font-family:'Raleway',sans-serif;font-size:13px;"/></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+          <div><label style="display:block;font-size:11px;font-weight:700;color:var(--azul);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;">Teléfono</label><input type="tel" placeholder="+502 0000-0000" style="width:100%;padding:11px 14px;border:1.5px solid var(--gris-med);border-radius:9px;font-family:'Raleway',sans-serif;font-size:13px;"/></div>
+          <div><label style="display:block;font-size:11px;font-weight:700;color:var(--azul);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;">Personas</label><select style="width:100%;padding:11px 14px;border:1.5px solid var(--gris-med);border-radius:9px;font-family:'Raleway',sans-serif;font-size:13px;background:#fff;"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+        </div>
+        <div style="margin-bottom:20px;"><label style="display:block;font-size:11px;font-weight:700;color:var(--azul);margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px;">Método de pago</label>
+          <select style="width:100%;padding:11px 14px;border:1.5px solid var(--gris-med);border-radius:9px;font-family:'Raleway',sans-serif;font-size:13px;background:#fff;">
+            <option>💳 Tarjeta de crédito</option><option>💳 Tarjeta de débito</option><option>🏦 Transferencia bancaria</option><option>📱 PayPal</option>
+          </select>
+        </div>
+        <button onclick="confirmarCompra()" style="width:100%;background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));color:var(--azul);border:none;padding:14px;border-radius:11px;font-family:'Raleway',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:transform .2s;box-shadow:0 4px 16px rgba(201,168,76,.35);">✈ Confirmar y Pagar</button>
+        <p style="text-align:center;color:#aaa;font-size:11px;margin-top:10px;">🔒 Pago 100% seguro · Sin cargos ocultos</p>
+      </div>
+    </div>
+
+    <!-- PASO 2: CONFIRMACIÓN EXITOSA -->
+    <div id="modal-step-confirm" style="display:none;text-align:center;padding:50px 36px;">
+      <div style="font-size:70px;margin-bottom:16px;animation:popIn .5s ease;" id="confirm-emoji">🎉</div>
+      <div style="font-family:'Playfair Display',serif;font-size:26px;color:var(--azul);margin-bottom:10px;" id="confirm-titulo">¡Reserva Exitosa!</div>
+      <div style="color:#666;font-size:14px;line-height:1.7;margin-bottom:22px;" id="confirm-mensaje">Tu reserva fue procesada exitosamente.</div>
+      <div style="background:linear-gradient(135deg,var(--azul),var(--azul-med));color:#fff;padding:16px 24px;border-radius:14px;margin-bottom:26px;">
+        <div style="font-size:12px;color:rgba(255,255,255,.65);margin-bottom:6px;">Código de confirmación</div>
+        <div style="font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--dorado);" id="confirm-codigo">AI-000000</div>
+      </div>
+      <div style="background:var(--gris-cl);border-radius:12px;padding:14px;margin-bottom:24px;text-align:left;">
+        <div style="font-size:12px;color:#888;margin-bottom:4px;">Detalle de tu reserva</div>
+        <div style="font-weight:700;color:var(--azul);font-size:14px;" id="confirm-detalle">–</div>
+      </div>
+      <button onclick="closeModal()" style="background:linear-gradient(135deg,var(--dorado),var(--dorado-cl));color:var(--azul);border:none;padding:13px 40px;border-radius:22px;font-family:'Raleway',sans-serif;font-weight:700;font-size:14px;cursor:pointer;">Volver al inicio</button>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  @keyframes popIn{0%{transform:scale(0)}80%{transform:scale(1.15)}100%{transform:scale(1)}}
+</style>
+
+<script>
+  const tipoIconos = { vuelo:'✈ Reservar Vuelo', hotel:'🏨 Reservar Hotel', guia:'🧭 Contratar Guía', oferta:'🏷 Reservar Oferta', paquete:'🎒 Reservar Paquete' };
+  const confirmMensajes = {
+    vuelo: 'Tu vuelo fue reservado exitosamente. Recibirás tu confirmación y boleto electrónico al correo en los próximos minutos.',
+    hotel: 'Tu habitación fue reservada exitosamente. Recibirás los detalles de tu estadía al correo registrado.',
+    guia: 'Tu guía turístico fue contratado exitosamente. Te contactará directamente para coordinar el tour.',
+    oferta: 'Tu paquete de oferta fue reservado. Recibirás todos los detalles al correo en breve.',
+    paquete: 'Tu paquete fue confirmado exitosamente. Un agente te contactará para coordinar todos los detalles.'
+  };
+  const prefijos = { vuelo:'AI', hotel:'HT', guia:'GT', oferta:'OF', paquete:'PQ' };
+  let tipoActual = 'vuelo';
+
+  function openModal(titulo, subtitulo, precio, tipo) {
+    tipo = tipo || 'vuelo';
+    tipoActual = tipo;
+    document.getElementById('modal-tipo-label').textContent = tipoIconos[tipo] || '✈ Reservar';
+    document.getElementById('modal-titulo').textContent = titulo || '–';
+    document.getElementById('modal-subtitulo').textContent = subtitulo || '';
+    document.getElementById('modal-precio-display').textContent = precio || '–';
+    document.getElementById('modal-step-form').style.display = 'block';
+    document.getElementById('modal-step-confirm').style.display = 'none';
+    document.getElementById('modal').classList.add('active');
+  }
+
+  function confirmarCompra() {
+    const prefijo = prefijos[tipoActual] || 'AI';
+    const codigo = prefijo + '-' + Math.floor(100000 + Math.random() * 900000);
+    const titulo = document.getElementById('modal-titulo').textContent;
+    const precio = document.getElementById('modal-precio-display').textContent;
+    document.getElementById('confirm-codigo').textContent = codigo;
+    document.getElementById('confirm-titulo').textContent =
+      tipoActual === 'vuelo' ? '¡Vuelo Reservado!' :
+      tipoActual === 'hotel' ? '¡Habitación Reservada!' :
+      tipoActual === 'guia'  ? '¡Guía Contratado!' : '¡Compra Exitosa!';
+    document.getElementById('confirm-mensaje').textContent = confirmMensajes[tipoActual] || 'Tu reserva fue procesada exitosamente.';
+    document.getElementById('confirm-detalle').textContent = titulo + ' · ' + precio;
+    document.getElementById('modal-step-form').style.display = 'none';
+    document.getElementById('modal-step-confirm').style.display = 'block';
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+  }
+
+  function setTab(el, id) {
+    document.querySelectorAll('.search-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    ['vuelos-search','hoteles-search','paquetes-search'].forEach(s => {
+      document.getElementById(s).style.display = (s === id) ? 'flex' : 'none';
+    });
+  }
+
+  document.getElementById('modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
+</body>
+</html>
